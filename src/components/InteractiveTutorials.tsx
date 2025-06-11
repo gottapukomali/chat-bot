@@ -11,7 +11,7 @@ interface Tutorial {
   videoUrl?: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   estimatedTime: string;
-  category: 'whatsapp' | 'paytm' | 'google-maps' | 'general';
+  category: 'whatsapp' | 'phonepe' | 'google-maps' | 'general';
 }
 
 const tutorials: Tutorial[] = [
@@ -28,43 +28,45 @@ const tutorials: Tutorial[] = [
       'Select Gallery or Camera',
       'Choose your photo and tap send'
     ],
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: 'https://www.youtube.com/embed/y3EdIiJeTXk',
     difficulty: 'beginner',
     estimatedTime: '5 minutes',
     category: 'whatsapp'
   },
   {
-    id: 'paytm-payment',
-    title: 'Making Payments with Paytm',
-    description: 'Send money and pay bills safely',
+    id: 'phonepe-payment',
+    title: 'Making Payments with PhonePe',
+    description: 'Send payment requests and transfer money safely',
     steps: [
-      'Open the Paytm app',
+      'Open the PhonePe app',
       'Tap on "Send Money"',
       'Enter the recipient\'s mobile number',
       'Enter the amount to send',
       'Add a note (optional)',
       'Tap "Pay" to proceed',
-      'Enter your Paytm PIN to confirm'
+      'Enter your UPI PIN to confirm'
     ],
+    videoUrl: 'https://www.youtube.com/embed/w0Ntpq3saPY',
     difficulty: 'beginner',
     estimatedTime: '7 minutes',
-    category: 'paytm'
+    category: 'phonepe'
   },
   {
-    id: 'google-maps-navigation',
-    title: 'Navigate with Google Maps',
-    description: 'Find directions and save locations',
+    id: 'google-maps-custom',
+    title: 'Create Custom Maps with Google Maps',
+    description: 'Learn to create and customize your own maps',
     steps: [
-      'Open Google Maps app',
-      'Tap the search bar at the top',
-      'Enter your destination',
-      'Tap "Directions"',
-      'Choose your transport mode',
-      'Tap "Start" to begin navigation',
-      'Follow the voice and visual directions'
+      'Open Google My Maps in your browser',
+      'Sign in with your Google account',
+      'Click "Create a New Map"',
+      'Add a title and description',
+      'Search for locations to add',
+      'Add markers and customize them',
+      'Save and share your custom map'
     ],
-    difficulty: 'beginner',
-    estimatedTime: '6 minutes',
+    videoUrl: 'https://www.youtube.com/embed/3uxVy1O8yaM',
+    difficulty: 'intermediate',
+    estimatedTime: '10 minutes',
     category: 'google-maps'
   }
 ];
@@ -145,6 +147,8 @@ export function InteractiveTutorials() {
                   src={selectedTutorial.videoUrl}
                   title={selectedTutorial.title}
                   frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                   className="rounded-lg"
                 ></iframe>

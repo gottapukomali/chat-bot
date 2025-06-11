@@ -85,14 +85,14 @@ function App() {
                 
                 <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <img src="https://images.pexels.com/photos/6214476/pexels-photo-6214476.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Mobile Payments" className="w-full h-40 object-cover rounded-md mb-3" />
-                  <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-white">Paytm</h3>
+                  <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-white">PhonePe</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">Send money, pay bills, and make online purchases.</p>
                 </div>
                 
                 <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <img src="https://images.pexels.com/photos/4116214/pexels-photo-4116214.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Google Maps Navigation" className="w-full h-40 object-cover rounded-md mb-3" />
                   <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-white">Google Maps</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">Navigate to destinations and save locations.</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">Navigate to destinations and create custom maps.</p>
                 </div>
               </div>
             </section>
@@ -104,7 +104,7 @@ function App() {
                 </div>
                 <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">Learn Popular Apps</h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  Get step-by-step tutorials for WhatsApp, Paytm, Google Maps, and more.
+                  Get step-by-step tutorials for WhatsApp, PhonePe, Google Maps, and more.
                 </p>
                 <button onClick={() => setCurrentPage('tutorials')} className="text-primary-500 font-medium">
                   Explore tutorials →

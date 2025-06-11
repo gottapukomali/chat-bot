@@ -2,7 +2,7 @@ export interface FAQ {
   id: string;
   question: string;
   answer: string[];
-  tool: 'whatsapp' | 'paytm' | 'google-maps' | 'general';
+  tool: 'whatsapp' | 'phonepe' | 'google-maps' | 'general';
   tags: string[];
 }
 
@@ -49,50 +49,50 @@ export const faqs: FAQ[] = [
     tags: ['group', 'create', 'multiple', 'contacts', 'whatsapp']
   },
   {
-    id: 'paytm-money-transfer',
-    question: 'How do I send money using Paytm?',
+    id: 'phonepe-money-transfer',
+    question: 'How do I send money using PhonePe?',
     answer: [
-      'Open the Paytm app on your phone.',
+      'Open the PhonePe app on your phone.',
       'Tap on "Send Money" on the home screen.',
       'Enter the mobile number or select a contact from your phonebook.',
       'Enter the amount you want to send.',
       'Add a message (optional).',
       'Tap "Pay" to proceed.',
-      'Confirm the payment using your Paytm PIN or biometric authentication.'
+      'Confirm the payment using your UPI PIN.'
     ],
-    tool: 'paytm',
-    tags: ['money', 'transfer', 'send', 'payment', 'paytm']
+    tool: 'phonepe',
+    tags: ['money', 'transfer', 'send', 'payment', 'phonepe', 'upi']
   },
   {
-    id: 'paytm-bill-payment',
-    question: 'How do I pay bills with Paytm?',
+    id: 'phonepe-payment-request',
+    question: 'How do I request money on PhonePe?',
     answer: [
-      'Open the Paytm app on your phone.',
+      'Open the PhonePe app on your phone.',
+      'Tap on "Request Money" on the home screen.',
+      'Enter the mobile number of the person you want to request money from.',
+      'Enter the amount you want to request.',
+      'Add a message explaining the request (optional).',
+      'Tap "Send Request".',
+      'The person will receive a notification to pay you.'
+    ],
+    tool: 'phonepe',
+    tags: ['request', 'money', 'payment', 'phonepe', 'upi']
+  },
+  {
+    id: 'phonepe-bill-payment',
+    question: 'How do I pay bills with PhonePe?',
+    answer: [
+      'Open the PhonePe app on your phone.',
       'Scroll down or search for "Bill Payments".',
       'Select the type of bill you want to pay (Electricity, Water, Gas, etc.).',
       'Select your service provider.',
       'Enter your customer ID or billing details.',
       'The bill amount will be fetched automatically.',
       'Tap "Proceed to Pay".',
-      'Complete the payment using your preferred payment method.'
+      'Complete the payment using your UPI PIN.'
     ],
-    tool: 'paytm',
-    tags: ['bill', 'payment', 'utility', 'paytm']
-  },
-  {
-    id: 'paytm-recharge',
-    question: 'How do I recharge my mobile on Paytm?',
-    answer: [
-      'Open the Paytm app on your phone.',
-      'Tap on "Mobile Recharge" on the home screen.',
-      'Enter your mobile number or select from saved numbers.',
-      'Select your operator and circle (location).',
-      'Choose a recharge plan or enter the amount.',
-      'Tap "Proceed to Recharge".',
-      'Complete the payment using your preferred payment method.'
-    ],
-    tool: 'paytm',
-    tags: ['recharge', 'mobile', 'prepaid', 'paytm']
+    tool: 'phonepe',
+    tags: ['bill', 'payment', 'utility', 'phonepe', 'upi']
   },
   {
     id: 'gmaps-navigation',
@@ -110,6 +110,21 @@ export const faqs: FAQ[] = [
     tags: ['navigation', 'directions', 'route', 'maps', 'google']
   },
   {
+    id: 'gmaps-custom-map',
+    question: 'How do I create a custom map on Google Maps?',
+    answer: [
+      'Open Google My Maps in your web browser.',
+      'Sign in with your Google account.',
+      'Click "Create a New Map".',
+      'Add a title and description for your map.',
+      'Search for locations and add them to your map.',
+      'Customize markers with different colors and icons.',
+      'Save your map and share it with others.'
+    ],
+    tool: 'google-maps',
+    tags: ['custom', 'map', 'create', 'my maps', 'google', 'markers']
+  },
+  {
     id: 'gmaps-save-location',
     question: 'How do I save a location on Google Maps?',
     answer: [
@@ -122,21 +137,6 @@ export const faqs: FAQ[] = [
     ],
     tool: 'google-maps',
     tags: ['save', 'bookmark', 'favorite', 'location', 'maps', 'google']
-  },
-  {
-    id: 'gmaps-offline',
-    question: 'How do I use Google Maps offline?',
-    answer: [
-      'Open the Google Maps app on your phone.',
-      'Tap on your profile picture or initial in the top right.',
-      'Tap "Offline maps".',
-      'Tap "Select your own map".',
-      'Adjust the area you want to download by pinching and zooming.',
-      'Tap "Download".',
-      'The selected area will be available offline for 30 days.'
-    ],
-    tool: 'google-maps',
-    tags: ['offline', 'download', 'no internet', 'maps', 'google']
   },
   {
     id: 'general-wifi',
@@ -172,8 +172,8 @@ export const faqs: FAQ[] = [
 
 export const suggestedQuestions = [
   'How do I send a photo on WhatsApp?',
-  'How do I send money using Paytm?',
-  'How do I navigate to a place using Google Maps?',
+  'How do I send money using PhonePe?',
+  'How do I create a custom map on Google Maps?',
   'How do I connect to WiFi?'
 ];
 
