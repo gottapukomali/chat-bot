@@ -1,4 +1,3 @@
-import React from 'react';
 import { MessageSquare, X, Minimize2 } from 'lucide-react';
 
 interface ChatHeaderProps {
@@ -12,8 +11,8 @@ export function ChatHeader({ onClose, onMinimize }: ChatHeaderProps) {
       <div className="flex items-center gap-2">
         <MessageSquare size={24} className="text-primary-100" />
         <div>
-          <h1 className="font-bold">Chart breakot</h1>
-          <p className="text-xs text-primary-100">Learn to use digital tools with ease</p>
+          <h1 className="font-bold">DigiBuddy</h1>
+          <p className="text-xs text-primary-100">Your Digital Learning Assistant</p>
         </div>
       </div>
       <div className="flex items-center gap-2">

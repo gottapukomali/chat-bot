@@ -32,12 +32,73 @@
   --secondary-800: 200 100% 25%;
   --secondary-900: 200 100% 15%;
   --secondary-foreground: 0 0% 100%;
+
+  /* Accent Colors */
+  --accent-50: 280 100% 97%;
+  --accent-100: 280 100% 92%;
+  --accent-200: 280 100% 85%;
+  --accent-300: 280 100% 75%;
+  --accent-400: 280 100% 65%;
+  --accent-500: 280 100% 55%;
+  --accent-600: 280 100% 45%;
+  --accent-700: 280 100% 35%;
+  --accent-800: 280 100% 25%;
+  --accent-900: 280 100% 15%;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+/* Font Size Classes */
+.font-size-small {
+  font-size: 14px;
+}
+
+.font-size-medium {
+  font-size: 16px;
+}
+
+.font-size-large {
+  font-size: 18px;
+}
+
+.font-size-small h1 { font-size: 1.8rem; }
+.font-size-small h2 { font-size: 1.5rem; }
+.font-size-small h3 { font-size: 1.2rem; }
+
+.font-size-medium h1 { font-size: 2rem; }
+.font-size-medium h2 { font-size: 1.75rem; }
+.font-size-medium h3 { font-size: 1.5rem; }
+
+.font-size-large h1 { font-size: 2.5rem; }
+.font-size-large h2 { font-size: 2rem; }
+.font-size-large h3 { font-size: 1.75rem; }
+
+/* Dark Mode */
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 220 100% 55%;
+  --primary-foreground: 222.2 84% 4.9%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
 }
 
 /* Custom Scrollbar */
@@ -49,13 +110,25 @@ body {
   background: #f1f1f1;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #c5c5c5;
   border-radius: 3px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #a5a5a5;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 /* Button Styles */
@@ -89,4 +162,71 @@ body {
 
 .btn-icon {
   @apply p-2 rounded-full;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .font-size-small { font-size: 16px; }
+  .font-size-medium { font-size: 18px; }
+  .font-size-large { font-size: 20px; }
+  
+  .btn {
+    @apply px-4 py-3 text-base;
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  /* Larger touch targets for mobile */
+  button, .btn, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    @apply border-2 border-white;
+  }
+  
+  .btn-outline {
+    @apply border-2;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

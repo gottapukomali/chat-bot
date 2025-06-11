@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MessageSquare, Mic, MicOff } from 'lucide-react';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { SuggestedQuestions } from './SuggestedQuestions';
 import { Message } from '../types';
 import { searchFAQs } from '../data/faqs';
+import { useAccessibility } from '../hooks/useAccessibility';
 
 interface ChatWidgetProps {
   isOpen?: boolean;
@@ -17,12 +18,42 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { speakText } = useAccessibility();
 
   useEffect(() => {
     setIsOpen(propIsOpen || false);
   }, [propIsOpen]);
+
+  useEffect(() => {
+    // Initialize speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.continuous = false;
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = 'en-US';
+
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        handleSendMessage(transcript);
+        setIsListening(false);
+      };
+
+      recognitionInstance.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+
+      setRecognition(recognitionInstance);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,13 +64,14 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
       const welcomeMessage: Message = {
         id: Date.now().toString(),
         type: 'bot',
-        text: "👋 Hello! I'm your Digital Literacy Assistant. I can help you learn how to use digital tools like WhatsApp, Paytm, and Google Maps. What would you like to know?",
+        text: "👋 Hello! I'm DigiBuddy, your Digital Literacy Assistant. I can help you learn how to use digital tools like WhatsApp, Paytm, and Google Maps. You can type your questions or use the microphone to speak. What would you like to know?",
         timestamp: new Date()
       };
       
       setMessages([welcomeMessage]);
+      speakText("Hello! I'm DigiBuddy, your Digital Literacy Assistant. How can I help you today?");
     }
-  }, [isOpen, isMinimized, messages.length]);
+  }, [isOpen, isMinimized, messages.length, speakText]);
 
   useEffect(() => {
     scrollToBottom();
@@ -66,11 +98,26 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
       };
       
       setMessages(prev => [...prev, botMessage]);
+      speakText(botResponse);
       setIsProcessing(false);
     }, 1000);
   };
 
   const generateResponse = (query: string): string => {
+    // Handle greetings and small talk
+    const lowerQuery = query.toLowerCase();
+    if (lowerQuery.includes('hello') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
+      return "Hello! I'm here to help you learn digital tools. You can ask me about WhatsApp, Paytm, Google Maps, or general smartphone features. What would you like to learn?";
+    }
+    
+    if (lowerQuery.includes('thank') || lowerQuery.includes('thanks')) {
+      return "You're welcome! I'm always here to help you learn. Is there anything else you'd like to know about digital tools?";
+    }
+
+    if (lowerQuery.includes('how are you')) {
+      return "I'm doing great and ready to help you learn! What digital skill would you like to explore today?";
+    }
+
     const results = searchFAQs(query);
     
     if (results.length > 0) {
@@ -81,10 +128,11 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
         response += `${index + 1}. ${step}\n`;
       });
       
+      response += `\nWould you like me to explain any of these steps in more detail?`;
       return response;
     }
     
-    return "I'm sorry, I don't have information about that yet. Could you try asking about WhatsApp, Paytm, or Google Maps features?";
+    return "I'm sorry, I don't have information about that yet. Could you try asking about WhatsApp, Paytm, Google Maps features, or general smartphone usage? You can also try rephrasing your question.";
   };
 
   const handleToggleChat = () => {
@@ -111,12 +159,25 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
     handleSendMessage(question);
   };
 
+  const toggleVoiceInput = () => {
+    if (recognition) {
+      if (isListening) {
+        recognition.stop();
+        setIsListening(false);
+      } else {
+        recognition.start();
+        setIsListening(true);
+        speakText("Listening for your question...");
+      }
+    }
+  };
+
   if (!isOpen) {
     return (
       <button 
         onClick={handleToggleChat}
         className="fixed bottom-6 right-6 bg-primary-500 text-white p-4 rounded-full shadow-lg hover:bg-primary-600 transition-all duration-300 z-50 animate-pulse-slow"
-        aria-label="Open chat assistant"
+        aria-label="Open DigiBuddy chat assistant"
       >
         <MessageSquare size={24} />
       </button>
@@ -125,7 +186,7 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
 
   return (
     <div 
-      className={`fixed bottom-6 right-6 bg-gray-50 rounded-xl shadow-2xl z-50 flex flex-col transition-all duration-300 ${
+      className={`fixed bottom-6 right-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-2xl z-50 flex flex-col transition-all duration-300 ${
         isMinimized 
           ? 'w-auto h-auto' 
           : 'w-[350px] sm:w-[400px] h-[600px] max-h-[80vh]'
@@ -135,7 +196,7 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
         <button 
           onClick={handleToggleChat}
           className="bg-primary-500 text-white p-4 rounded-full shadow-lg hover:bg-primary-600 transition-colors"
-          aria-label="Expand chat assistant"
+          aria-label="Expand DigiBuddy chat assistant"
         >
           <MessageSquare size={24} />
         </button>
@@ -150,7 +211,7 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
             
             {isProcessing && (
               <div className="flex items-center gap-2 text-gray-500 ml-12 mb-4">
-                <div className="h-2 w-2 bg-primary-400 rounded-full animate-bounce\" style={{ animationDelay: '0ms' }}></div>
+                <div className="h-2 w-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
                 <div className="h-2 w-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
                 <div className="h-2 w-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
@@ -163,10 +224,27 @@ export function ChatWidget({ isOpen: propIsOpen, onClose }: ChatWidgetProps) {
             <div ref={messagesEndRef} />
           </div>
           
-          <ChatInput 
-            onSendMessage={handleSendMessage} 
-            isProcessing={isProcessing} 
-          />
+          <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 sticky bottom-0 w-full">
+            <div className="flex items-center gap-2">
+              <ChatInput 
+                onSendMessage={handleSendMessage} 
+                isProcessing={isProcessing} 
+              />
+              {recognition && (
+                <button
+                  onClick={toggleVoiceInput}
+                  className={`p-3 rounded-full transition-colors ${
+                    isListening 
+                      ? 'bg-red-500 text-white animate-pulse' 
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}
+                  aria-label={isListening ? "Stop listening" : "Start voice input"}
+                >
+                  {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+                </button>
+              )}
+            </div>
+          </div>
         </>
       )}
     </div>
